@@ -55,8 +55,8 @@ dict = {
 "VVD":"動詞の過去形",
 "VVG":"動詞の動名詞または現在分詞",
 "VVN":"動詞の過去分詞",
-"VVP":"動詞の三人称単数形現在",
-"VVZ":"動詞の三人称単数形以外の現在",
+"VVZ":"動詞の三人称単数形現在",
+"VVP":"動詞の三人称単数形以外の現在",
 "WDT":"Wh限定詞",
 "WP":"Wh代名詞",
 "WP$":"所有関係代名詞",
@@ -74,27 +74,34 @@ def analysis(text):
     # word, pos, lemma の一覧を表示する。
     return tags_tuple
 
-output = []
-output_tmp = []
+output = ""
+table_html = "<table>"
 # コメントファイルを読み込む
 f = open('sentence.txt', 'r')
 lines = f.readlines()
 for line in lines:
-  line_tmp = ""
+  line_tmp = "<p>"
   tags = analysis(line)
+  i = 0
   for tag in tags:
-    output_tmp.append([tag[0], tag[2], dict.get(tag[1])])
-    if(tag[0] == '.'):
-      line_tmp = line_tmp + tag[0]
-      output.append([line_tmp])
-      output = output + output_tmp
-      output_tmp = []
-      line_tmp = ""
+    #述語動詞の判定
+    if(tag[1][0] == 'V'):
+      line_tmp = line_tmp + "<b>{}</b> ".format(tag[0])
+      table_html = table_html + "<tr><td><b>{}</b></td><td><b>{}</b></td><td><b>{}</b></td></tr>\n".format(tag[0], tag[2], dict.get(tag[1]))
+    elif(tag[0] == '.' or i >= len(tags) - 1):
+      table_html = table_html + "<tr><td>{}</td><td>{}</td><td>{}</td></tr>\n".format(tag[0], tag[2], dict.get(tag[1]))
+      line_tmp = line_tmp + tag[0] + "</p>"
+      output = output + line_tmp
+      table_html = table_html + "</table>"
+      output = output + table_html
+      line_tmp = "<p>"
+      table_html = "<table>"
     else:
+      table_html = table_html + "<tr><td>{}</td><td>{}</td><td>{}</td></tr>\n".format(tag[0], tag[2], dict.get(tag[1]))
       line_tmp = line_tmp + tag[0] + " "
+    i = i + 1
 f.close()
 
 # CSVファイルに書き込む
-with open("tagger.csv", "w", encoding="shift_jis", newline="") as fp:
-  writer = csv.writer(fp,delimiter=',')
-  writer.writerows(output)
+with open("tagger.html", "w" ,encoding="utf-8") as fp:
+  fp.writelines(output)
