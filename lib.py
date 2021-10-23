@@ -78,7 +78,7 @@ def dictionary(conn, word):
     c = conn.cursor()
     # SQLを実行して単語データを取り出す --- (*4)
     sql = '''SELECT * FROM items WHERE word = ?
-    ORDER BY level DESC LIMIT 3'''
+    ORDER BY level DESC LIMIT 5'''
     rows = c.execute(sql, (word,))
     result = ""
     for n in rows:
