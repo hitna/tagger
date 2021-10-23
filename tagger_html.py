@@ -2,7 +2,7 @@
 import lib
 import sqlite3
 
-output = "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/><style>div {display: inline-block; _display: inline;}</style><body bgcolor=\"#000000\" text=\"#ffffff\">"
+output = lib.html
 line_tmp = ""
 conn = sqlite3.connect("ejdict.sqlite3")
 # コメントファイルを読み込む
@@ -21,11 +21,11 @@ for line in lines:
     mean = lib.dictionary(conn, tag[2])
     #述語動詞の判定
     if(tag[1][0] == 'V'):
-      line_tmp = line_tmp + "<b title=\"[{}]{}\">{}</b> ".format(lib.dict.get(tag[1]),mean, tag[0])
+      line_tmp = line_tmp + "<div class=\"tooltip3\"><b>{}</b><div class=\"description3\">[{}]{}</div></div> ".format(tag[0],lib.dict.get(tag[1]),mean)
     elif((tag[0] == '.' and dialog_cnt % 2 == 0) or i >= i_max):
-      line_tmp = line_tmp + tag[0] + "<br>"
+      line_tmp = line_tmp + "<div class=\"tooltip3\">{}<div class=\"description3\">[{}]{}</div></div><br>".format(tag[0],lib.dict.get(tag[1]),mean)
     else:
-      line_tmp = line_tmp + "<div title=\"[{}]{}\">{}</div> ".format(lib.dict.get(tag[1]),mean,tag[0])
+      line_tmp = line_tmp + "<div class=\"tooltip3\">{}<div class=\"description3\">[{}]{}</div></div> ".format(tag[0],lib.dict.get(tag[1]),mean)
     i = i + 1
 f.close()
 conn.close()

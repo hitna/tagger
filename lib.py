@@ -2,6 +2,42 @@ import warnings
 warnings.simplefilter('ignore', FutureWarning)
 import treetaggerwrapper as ttw
 
+html = '''
+<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>
+<style>
+div {display: inline-block; _display: inline;}
+.tooltip3{
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+.tooltip3 p{
+    margin:0;
+    padding:0;
+}
+.description3 {
+    display: none;
+    position: absolute;
+    padding: 10px;
+    font-size: 14px;
+    line-height: 1.6em;
+    color: #000000;
+    border-radius: 5px;
+    background: #ffffff;
+    width: 500px;
+    z-index: 10;
+}
+
+.tooltip3:hover .description3{
+    display: inline-block;
+    top: 30px;
+    left: 0px;
+}
+</style>
+<body bgcolor=\"#000000\" text=\"#ffffff\">
+
+'''
+
 dict = {
 "CC":"等位接続詞",
 "CD":"基数",
